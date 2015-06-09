@@ -2,8 +2,9 @@
 Search Engine Exam
 
 Your task is to code a simple efficient search engine that :
-1. can be added with multiple documents
-2. can search all documents that contain a certain list of terms
+
+ 1. can be added with multiple documents
+ 2. can search all documents that contain a certain list of terms
 
 This is the interface that your class needs to implement :
 ```sh

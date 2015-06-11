@@ -52,6 +52,7 @@ public class MySearchEngine implements SearchEngine {
 				 words.put(term, value); 
 			 }
 		 }
+		 num_of_documents++;
 	}
 
 	@Override
@@ -61,6 +62,34 @@ public class MySearchEngine implements SearchEngine {
 	}
 	
 	
-
+	
+	public static void main(String args[]){
+		
+		MySearchEngine engine = new MySearchEngine();
+		
+        Document doc1 = new Document(new DocumentId(0) , "hello world");
+        Document doc2 = new Document(new DocumentId(1) , "shalom olam dog");
+        Document doc3 = new Document(new DocumentId(2) , "foo bar food");
+        Document doc4 = new Document(new DocumentId(3) , "dog cat world");
+		
+        engine.add(doc1);
+        engine.add(doc2);
+        engine.add(doc3);
+        engine.add(doc4);
+        
+        for (int i = 0; i < engine.documents.size(); i++) {
+        	for (int j = 0; j < engine.documents.get(i).terms.length; j++) {
+				System.out.print(engine.documents.get(i).terms[j] + " ");
+			}
+		}
+        System.out.println();
+        
+        for (String word : engine.words.keySet()){
+        	System.out.println("key: " + word);
+        	System.out.println("value: " + engine.words.get(word));
+        	System.out.println();
+        }
+        
+	}
 
 }

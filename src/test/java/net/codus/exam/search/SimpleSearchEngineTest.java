@@ -1,4 +1,8 @@
-package net.codus.exam.search;
+package test.java.net.codus.exam.search;
+
+import main.java.net.codus.exam.search.Document;
+import main.java.net.codus.exam.search.DocumentId;
+import main.java.net.codus.exam.search.SimpleSearchEngine;
 
 import org.junit.Test;
 

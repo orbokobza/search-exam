@@ -1,4 +1,4 @@
-package net.codus.exam.search;
+package main.java.net.codus.exam.search;
 
 import java.util.ArrayList;
 import java.util.Arrays;

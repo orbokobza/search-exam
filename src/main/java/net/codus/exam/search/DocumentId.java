@@ -1,4 +1,4 @@
-package net.codus.exam.search;
+package main.java.net.codus.exam.search;
 
 /**
  * Created by Ohad Serfaty on 6/9/15.

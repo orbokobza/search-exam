@@ -1,19 +1,20 @@
 package main.java.net.codus.exam.search;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 
 public class MySearchEngine implements SearchEngine {
 
 	private ArrayList<Document> documents;
-	private HashMap<String, String> words;
+	private HashMap<String, BitSet> words;
 	private int num_of_documents;
 
 	// Constructor
 	public MySearchEngine() {
 		documents = new  ArrayList<Document>();
-		words = new HashMap<String, String>();
+		words = new HashMap<String, BitSet>();
 		num_of_documents = 0;
 	}
 
@@ -23,95 +24,60 @@ public class MySearchEngine implements SearchEngine {
 		// Add the document to the documents list
 		documents.add(document);
 
-		// Update the terms of the added document in the HashMap(words)
+		// Update the 'terms' of the added document in 'words'
 		for (String term : document.terms){
-
-			// If the term is already exist in 'words'- update with zeros(if neccecery) and '1' in the end
+			BitSet value = new BitSet();
+			
+			// If the term is already exist in 'words'- update the current document
 			if (words.containsKey(term)){
-				String value = words.get(term);
-				// Amount of zeros to add
-				int diff = num_of_documents - value.length();
-
-				for (int i = 0; i < diff; i++) {
-					value += '0';
-				}
-				value += '1';
-
-				words.remove(term);
-				words.put(term, value);
+				value = words.get(term);
 			} 
-			// Else - insert a new element with the relevant value
-			else {
-				String value = "";
-
-				for (int i = 0; i < num_of_documents; i++) {
-					value += '0';
-				}
-				value += '1';
-
-				words.put(term, value); 
-			}
+			
+			// set the new value and insert to words
+			value.set(num_of_documents);
+			words.put(term, value);
 		}
+		
 		num_of_documents++;
 	}
 
 	@Override
-	public List<DocumentId> search(List<String> terms) {
-		ArrayList<String> binary_terms = new ArrayList<String>();
+	public ArrayList<DocumentId> search(List<String> terms) {
+		
+		ArrayList<DocumentId> result = new ArrayList<DocumentId>();
+		ArrayList<BitSet> binary_terms = new ArrayList<BitSet>();
+		BitSet bits_result = new BitSet();
 
+		// If there's no terms - return empty list
+		if (terms.size() == 0){
+			return result;
+		}
+		
 		// For every term - if the terms exist in 'words', insert to 'binary_terms' in binary representation 
 		for (int i = 0; i < terms.size(); i++) {
-			if (words.containsKey(terms.get(i))){
-				String value = words.get(terms.get(i));
-				int diff = num_of_documents - value.length();
-
-				for (int j = 0; j < diff; j++) {
-					value += '0';
-				}
-				binary_terms.add(value);
-			}
+			
+			// If the term doesn't exist in 'words' - return empty list
+			if (!words.containsKey(terms.get(i))){
+				return result;
+			} 
+			
+			binary_terms.add(words.get(terms.get(i)));
 		}
 
-		//TODO:
-		// AND operation between the element in the binary_terms
+		bits_result = binary_terms.get(0);
 		
-		// Insert all the relevant indices into list and return
-		
-		
-		
-		return null;
-	}
-
-
-
-
-	public static void main(String args[]){
-
-		MySearchEngine engine = new MySearchEngine();
-
-		Document doc1 = new Document(new DocumentId(0) , "hello world");
-		Document doc2 = new Document(new DocumentId(1) , "shalom olam dog");
-		Document doc3 = new Document(new DocumentId(2) , "foo bar food");
-		Document doc4 = new Document(new DocumentId(3) , "dog cat world");
-
-		engine.add(doc1);
-		engine.add(doc2);
-		engine.add(doc3);
-		engine.add(doc4);
-
-		/*
-        for (int i = 0; i < engine.documents.size(); i++) {
-        	for (int j = 0; j < engine.documents.get(i).terms.length; j++) {
-				System.out.print(engine.documents.get(i).terms[j] + " ");
-			}
+		// Perform AND operation between all the binaries
+		for (int i = 1; i < binary_terms.size(); i++) {
+			bits_result.and(binary_terms.get(i));
 		}
-        System.out.println();
+		
+		//Insert all the relevant indices into 'result'
+		for (int i = bits_result.nextSetBit(0); i != -1; i = bits_result.nextSetBit(i + 1)) {
+			result.add(new DocumentId(i));
+		}
 
-        for (String word : engine.words.keySet()){
-        	System.out.println("key: " + word);
-        	System.out.println("value: " + engine.words.get(word));
-        	System.out.println();
-        }
-		 */
+		
+		return result;
 	}
+
 }

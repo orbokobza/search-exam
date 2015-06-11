@@ -2,6 +2,7 @@ package test.java.net.codus.exam.search;
 
 import main.java.net.codus.exam.search.Document;
 import main.java.net.codus.exam.search.DocumentId;
+import main.java.net.codus.exam.search.MySearchEngine;
 import main.java.net.codus.exam.search.SimpleSearchEngine;
 
 import org.junit.Test;
@@ -22,6 +23,7 @@ public class SimpleSearchEngineTest {
   @Test
   public void testSimple(){
     SimpleSearchEngine searchEngine = new SimpleSearchEngine();
+   // MySearchEngine searchEngine = new MySearchEngine();
     Arrays.asList(
         new Document(new DocumentId(0) , "hello world"),
         new Document(new DocumentId(1) , "shalom olam dog"),
@@ -39,7 +41,8 @@ public class SimpleSearchEngineTest {
   public void testRandom(){
     Random random = new Random();
     List<Document> documents = new ArrayList<>();
-    SimpleSearchEngine searchEngine = new SimpleSearchEngine();
+     SimpleSearchEngine searchEngine = new SimpleSearchEngine();
+    //MySearchEngine searchEngine = new MySearchEngine();
 
     int DOCUMENTS = 20;
     int MAX_TERMS_IN_DOC = 200;
@@ -61,6 +64,10 @@ public class SimpleSearchEngineTest {
 
     for (int i=0; i<TERMS; i++){
       String term = "term" + i;
+      
+     // List<String> list = new ArrayList<>();
+      //list.add(term);
+      
       List<DocumentId> documentsWithTerm = searchEngine.search(term);
       if (i%50 == 0) {
         System.out.println(i);

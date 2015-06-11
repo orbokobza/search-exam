@@ -2,7 +2,7 @@ package main.java.net.codus.exam.search;
 
 import java.util.Arrays;
 
-//1234 test
+
 /**
  * Created by Ohad Serfaty on 6/9/15.
  */

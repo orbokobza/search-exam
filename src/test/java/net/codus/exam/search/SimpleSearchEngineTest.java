@@ -22,6 +22,9 @@ public class SimpleSearchEngineTest {
 
   @Test
   public void testSimple(){
+	  long startTime = System.nanoTime();
+	  
+	  
     SimpleSearchEngine searchEngine = new SimpleSearchEngine();
    // MySearchEngine searchEngine = new MySearchEngine();
     Arrays.asList(
@@ -35,14 +38,19 @@ public class SimpleSearchEngineTest {
     assertEquals(Arrays.asList(new DocumentId(3), new DocumentId(4)), searchEngine.search(Arrays.asList("cat")));
     assertEquals(Arrays.asList(new DocumentId(2)), searchEngine.search(Arrays.asList("foo")));
     assertEquals(Collections.emptyList(), searchEngine.search(Arrays.asList("kuku")));
+    
+	long endTime = System.nanoTime();
+	System.out.println("Took simple "+(endTime - startTime) + " ns"); 
   }
 
   @Test
   public void testRandom(){
+	  long startTime = System.nanoTime();
+	  
     Random random = new Random();
     List<Document> documents = new ArrayList<>();
      SimpleSearchEngine searchEngine = new SimpleSearchEngine();
-    //MySearchEngine searchEngine = new MySearchEngine();
+  //  MySearchEngine searchEngine = new MySearchEngine();
 
     int DOCUMENTS = 20;
     int MAX_TERMS_IN_DOC = 200;
@@ -65,9 +73,6 @@ public class SimpleSearchEngineTest {
     for (int i=0; i<TERMS; i++){
       String term = "term" + i;
       
-     // List<String> list = new ArrayList<>();
-      //list.add(term);
-      
       List<DocumentId> documentsWithTerm = searchEngine.search(term);
       if (i%50 == 0) {
         System.out.println(i);
@@ -78,9 +83,8 @@ public class SimpleSearchEngineTest {
         assertEquals(containsTerm , documentsWithTerm.contains(document.getId()));
       }
     }
-
+	long endTime = System.nanoTime();
+	System.out.println("Took random: "+(endTime - startTime) + " ns"); 
   }
-
-
 
 }
